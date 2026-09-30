@@ -1,0 +1,101 @@
+/* Year tab of the lakes dashboard. Matches the dashboard popup: Arial, beige panels. */
+
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#F5F1E8; --panel:#FFFFFF; --ink:#111111; --muted:#666666; --line:#E0DACD;
+  --gap:#E6E1D6; --hatch:#CFC8BA; --ph:#8A8A8A; --alert:#b2182b; --accent:#3360a3;
+  /* habitat layers (also used for the matching bird microhabitats) */
+  --water:#3D7DB3; --shallow:#86B4D8; --vow:#2A9483; --perm:#2F5E2A;
+  --unk:#93AE80; --vob:#B5B43E; --bed:#B8894C;
+  --inat:#8E6C8A;   /* iNaturalist rows: muted mauve, apart from the habitat colours */
+  --label:118px;
+  color-scheme:light;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 Arial,Helvetica,sans-serif;padding:14px 16px 24px}
+.wrap{max-width:1000px;margin:0 auto;display:grid;gap:14px}
+h1{font:700 21px/1.25 Arial,Helvetica,sans-serif;margin:0;text-wrap:pretty}
+.eyebrow{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.card{background:var(--panel);border-radius:8px;padding:12px 14px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.error{color:var(--alert)}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.head{display:flex;gap:10px 20px;align-items:flex-start;justify-content:space-between}
+.head .title{display:grid;gap:6px;flex:1;min-width:0}
+.pick{display:grid;gap:4px}
+.pick select{font:600 13px Arial,sans-serif;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-width:110px}
+.pick select:focus-visible,.play:focus-visible,input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ── Map + month readout ────────────────────────────────────────────────── */
+.top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:12px}
+@media (max-width:560px){.top{grid-template-columns:1fr}}
+.mapbox{display:grid;gap:8px;align-content:start}
+.frame{position:relative;aspect-ratio:480/471;max-width:100%;background:var(--gap);border-radius:6px;overflow:hidden;display:grid;place-items:center}
+.frame img{width:100%;height:100%;object-fit:contain;display:block}
+.frame .empty{font-size:13px;color:var(--muted);text-align:center;padding:20px}
+.frame-note{font-size:11px;color:var(--ph);margin:0}
+.map-head{display:flex;justify-content:space-between;align-items:center}
+.view{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.view button{font:600 11px Arial,sans-serif;border:0;background:var(--panel);color:var(--muted);padding:4px 9px;cursor:pointer}
+.view button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.view button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.readout{display:grid;gap:10px;align-content:start}
+.readout h2{font:700 18px/1.1 Arial,sans-serif;margin:0}
+.state{display:inline-block;font-size:11px;font-weight:700;padding:4px 7px;border-radius:4px;border:1px solid currentColor}
+.kv{display:grid;grid-template-columns:auto auto;justify-content:start;gap:3px 16px;font-size:12px;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right}
+.note{font-size:12px;margin:0}
+.controls{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center}
+.play{font:600 12px Arial,sans-serif;border:1px solid var(--accent);background:none;color:var(--accent);border-radius:6px;padding:6px 12px;cursor:pointer;min-width:64px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* ── Timeline ───────────────────────────────────────────────────────────── */
+.timeline{background:var(--panel);border-radius:8px;padding:12px;overflow-x:auto}
+.tl{min-width:560px;display:grid;gap:5px}
+.row{display:grid;grid-template-columns:var(--label) repeat(12,minmax(0,1fr));align-items:stretch;column-gap:2px}
+.lab{font-size:11px;line-height:1.25;color:var(--muted);padding-right:8px;align-self:center}
+.lab b{display:block;color:var(--ink);font-size:12px}
+.lab .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.group{margin-top:8px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.c{position:relative;cursor:pointer;border-radius:3px}
+.c.sel{box-shadow:inset 0 0 0 2px var(--ink)}
+.months .c{font-size:11px;text-align:center;color:var(--muted);padding:3px 0}
+.months .c.sel{color:var(--ink);font-weight:700;box-shadow:none;text-decoration:underline;text-underline-offset:3px}
+
+/* migrant season bar */
+.season .c{height:34px}
+.season .c.sel{box-shadow:none}
+.bar{position:absolute;top:20px;bottom:8px;left:0;right:-2px;background:var(--ink);opacity:.75}
+.bar.start{border-radius:4px 0 0 4px}
+.bar.end{border-radius:0 4px 4px 0;right:0}
+.flag{position:absolute;top:3px;font-size:10px;color:var(--ink);white-space:nowrap}
+.season .note-cell{position:absolute;left:4px;top:11px;font-size:11px;color:var(--muted);white-space:nowrap}
+
+/* lake state */
+.state-row .c{height:22px;font:700 10px/22px Arial,sans-serif;text-align:center;color:#fff;overflow:hidden;white-space:nowrap}
+
+/* bird rows */
+.birds .c{height:22px;display:grid;place-items:center;font-size:11px;color:var(--ink)}
+.birds .c.none{background:repeating-linear-gradient(135deg,var(--hatch) 0 2px,transparent 2px 6px);opacity:.6}
+
+/* water quality */
+.wq .c{height:24px;display:grid;place-items:center;font-size:12px;text-align:center;color:var(--ink)}
+.wq .c.none::before{content:"–";color:var(--hatch)}
+.wq .c.band-good{background:color-mix(in srgb, var(--vow) 28%, transparent)}
+.wq .c.band-medium{background:color-mix(in srgb, var(--ph) 16%, transparent)}
+.wq .c.band-poor{background:color-mix(in srgb, var(--alert) 20%, transparent)}
+.wq .c.band-very-poor{background:color-mix(in srgb, var(--alert) 40%, transparent)}
+.wq .c.breach{background:color-mix(in srgb, var(--alert) 16%, transparent)}
+.wq .c.swing{box-shadow:inset 0 0 0 2px var(--alert);font-weight:700}
+
+/* ── Highlights, legend, notes ──────────────────────────────────────────── */
+.events{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.events li{display:grid;grid-template-columns:72px 1fr;gap:10px;font-size:12px;align-items:baseline}
+.events .when{font-size:11px;color:var(--muted)}
+.events .wq::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--alert);margin-right:7px;vertical-align:1px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--muted)}
+.about{font-size:11px;color:var(--muted);border-left:3px solid var(--hatch);padding:2px 0 2px 10px;margin:0}
